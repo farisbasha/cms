@@ -52,7 +52,6 @@ it('can create an indexing session', function () {
 
     $session = $this->indexer->createIndexingSession(
         volumeList: [$volumeData],
-        cacheRemoteImages: false,
         isCli: true,
         listEmptyFolders: false,
     );
@@ -61,7 +60,6 @@ it('can create an indexing session', function () {
     expect($session->id)->not()->toBeNull();
     expect($session->totalEntries)->toBe(0);
     expect($session->processedEntries)->toBe(0);
-    expect($session->cacheRemoteImages)->toBeFalse();
     expect($session->isCli)->toBeTrue();
     expect($session->listEmptyFolders)->toBeFalse();
     expect($session->actionRequired)->toBeFalse();
@@ -437,14 +435,12 @@ it('stores session options correctly', function () {
 
     $session = $this->indexer->createIndexingSession(
         volumeList: [$volumeData],
-        cacheRemoteImages: true,
         isCli: false,
         listEmptyFolders: true,
     );
 
     $record = AssetIndexingSession::findOrFail($session->id);
 
-    expect($record->cacheRemoteImages)->toBeTrue();
     expect($record->isCli)->toBeFalse();
     expect($record->listEmptyFolders)->toBeTrue();
 });
@@ -473,7 +469,6 @@ it('can start an indexing session with files on disk', function () {
 
     $session = $this->indexer->startIndexingSession(
         volumes: [$volumeData->id],
-        cacheRemoteImages: false,
         listEmptyFolders: false,
     );
 
@@ -500,7 +495,6 @@ it('sets processIfRootEmpty when volume has no files', function () {
 
     $session = $this->indexer->startIndexingSession(
         volumes: [$volumeData->id],
-        cacheRemoteImages: false,
         listEmptyFolders: false,
     );
 
@@ -518,7 +512,6 @@ it('stores scoped disk listings as volume-relative paths', function () {
 
         $session = $this->indexer->startIndexingSession(
             volumes: [$volumeData->id],
-            cacheRemoteImages: false,
             listEmptyFolders: false,
         );
 
