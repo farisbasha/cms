@@ -9,7 +9,6 @@ namespace craft\assetpreviews;
 
 use Craft;
 use craft\base\AssetPreviewHandler;
-use craft\helpers\FileHelper;
 use craft\helpers\Html;
 
 /**
@@ -25,9 +24,7 @@ class Text extends AssetPreviewHandler
      */
     public function getPreviewHtml(array $variables = []): string
     {
-        $localCopy = $this->asset->getCopyOfFile();
-        $contents = Html::encode(file_get_contents($localCopy));
-        FileHelper::unlink($localCopy);
+        $contents = Html::encode($this->asset->getContents());
 
         return Craft::$app->getView()->renderTemplate('assets/_previews/text.twig',
             array_merge([
